@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div {
+				width: 1000px;
+				height: 500px;
+				margin: 0 auto;
+				margin-top: 100px;
+				position: relative;
+				background: url(img/1.jpg) no-repeat;
+				background-size: cover;
+			}
+			
+			p {
+				width: 40px;
+				height: 40px;
+				background-color: hotpink orangered;
+				position: absolute;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="box">
+		</div>
+		<audio src="img/c.wav" id="yy"></audio>
+	</body>
+	<script type="text/javascript">
+		var box = document.getElementById("box");
+		var arr = ["yellow", "red", "green", "hotpink", "black", "blue", "greenyellow", "orangered"];
+		var num = 0;
+        var yy = document.getElementById("yy");
+		function Ball(left, top) {
+			this.r = 40;
+			this.left = Math.random() * (box.clientWidth - this.r);
+			this.top = Math.random() * (box.clientHeight - this.r);
+			this.X = parseInt(Math.random() * 11 - 5);
+			this.Y = parseInt(Math.random() * 11 - 5);
+			this.init();
+			this.move();
+			this.i = parseInt(Math.random() * 8);
+		}
+		Ball.prototype.init = function() {
+			this.dom = document.createElement("p");
+			box.appendChild(this.dom);
+		}
+		Ball.prototype.yidong = function() {
+			this.dom.style.left = this.left + "px";
+			this.dom.style.top = this.top + "px";
+			this.dom.style.backgroundColor = arr[this.i];			
+		}
+		Ball.prototype.move = function() {
+			var that = this;
+			this.t1 = setInterval(function() {
+				that.left += that.X;
+				that.top += that.Y;
+				if(that.top >= (box.clientHeight - that.r) || that.top <= 0) {
+					that.Y = -that.Y;
+					yy.load();
+					yy.play();
+				} else if(that.left >= (box.clientWidth - that.r) || that.left <= 0) {
+					that.X = -that.X;
+					yy.load();
+					yy.play();
+				} else {
+					that.yidong();
+				}
+				if(num >= 60) {
+					clearInterval(that.t1);
+				}
+				
+			}, 10)
+		}
+		var t = setInterval(function() {
+			num++;
+			if(num >= 60) {
+				clearInterval(t);
+				alert("游戏结束");
+			}
+			new Ball();
+		}, 1000)
+	</script>
+
+</html>
